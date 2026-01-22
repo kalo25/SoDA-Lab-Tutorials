@@ -82,6 +82,7 @@ library(renv)       # Dependency management (renv.lock)
 library(logger)     # Logging pipeline steps
 library(tidyverse)  # Data manipulation + plotting
 library(broom)      # Tidy regression outputs (for tables)
+library(ggplot2)    # graphs and visuals
 
 
 # renv::init() creates a project-local library and an renv.lock file.
@@ -165,6 +166,7 @@ log_info(paste("Rows after cleaning:", nrow(education_income_clean)))
 
 # Create log-income version for Model 3
 # If income has zeros or negatives, log(income) is not finite.
+
 education_income_clean <- education_income_clean |>
   dplyr::mutate(log_income = log(income))
 
