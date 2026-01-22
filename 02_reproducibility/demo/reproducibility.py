@@ -76,7 +76,8 @@
 # For teaching: keep installation lines commented out so students can run them
 # manually if needed.
 
-# pip install pandas numpy matplotlib statsmodels
+pip install pandas numpy matplotlib statsmodels
+
 
 import os
 import sys
@@ -87,7 +88,7 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pltimport 
 
 
 logging.info("platform module file: " + str(platform.__file__))

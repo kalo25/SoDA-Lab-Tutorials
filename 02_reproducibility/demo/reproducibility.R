@@ -28,10 +28,10 @@
 #
 # --- Step A: Clone the instructor repository ---
 # 1) Choose (or create) a folder where you want to keep course projects:
-#    cd <PATH_TO_YOUR_COURSE_FOLDER>
+#    cd <"C:\Users\karra\Desktop\Coding_work\soda_501">
 #
 # 2) Clone the instructor repo:
-#    git clone <INSTRUCTOR_REPO_URL>
+#    git clone <https://github.com/jfedgerton/soda_501.git>
 #
 # 3) Move into the repo:
 #    cd <INSTRUCTOR_REPO_FOLDER_NAME>
@@ -49,7 +49,7 @@
 #    git branch
 #
 # 8) Add YOUR repo as a remote called "origin" (if origin is not already set):
-#    git remote add origin <YOUR_REPO_URL>
+#    git remote add origin <https://github.com/kalo25/SoDA-Lab-Tutorials>
 #
 # 9) Confirm remotes:
 #    git remote -v
@@ -85,6 +85,7 @@ library(broom)      # Tidy regression outputs (for tables)
 
 
 # renv::init() creates a project-local library and an renv.lock file.
+
 # Teaching workflow:
 # - Run renv::init() ONCE at the start of a project (not every time).
 # - After that, use renv::snapshot() to record package versions.
@@ -92,7 +93,9 @@ library(broom)      # Tidy regression outputs (for tables)
 #
 # NOTE: We leave renv::init() commented out to avoid re-initializing by accident.
 
-# renv::init()
+renv::init() ##freezes and preserves the R version and all packages you are using for this session--anyone who copies the code will be able to use the same version/packages
+
+renv::snapshot()
 
 # Reproducible projects should separate:
 # - raw data (unchanged inputs)
@@ -111,7 +114,7 @@ dir.create("outputs/tables", recursive = TRUE, showWarnings = FALSE)
 # - Where outputs were written
 
 logger::log_threshold(DEBUG)
-logger::log_appender(appender_file("analysis_log.txt"))
+logger::log_appender(appender_file("analysis_log.txt")) ##creating a log file that documents all actions and code lines run
 
 # Pipeline overview:
 #   1) Load data
@@ -131,6 +134,7 @@ log_info("Starting analysis pipeline")
 
 log_info("Loading education/income dataset from data/raw/education_income.csv")
 
+education_income_raw <- readr::read_csv("data/raw/education_income.csv")
 
 log_info(paste("Rows loaded:", nrow(education_income_raw)))
 log_info(paste("Columns loaded:", ncol(education_income_raw)))
@@ -139,7 +143,7 @@ log_info(paste("Columns loaded:", ncol(education_income_raw)))
 # Here we re-write it to confirm the exact file used in the run.
 
 log_info("Saving raw data copy (unchanged)")
-# readr::write_csv(education_income_raw, "data/raw/education_income.csv")
+readr::write_csv(education_income_raw, "data/raw/education_income.csv")
 
 # Keep this simple and explicit:
 # - Ensure education and income exist
@@ -150,7 +154,7 @@ log_info("Saving raw data copy (unchanged)")
 
 log_info("Cleaning education/income data")
 
-education_income_clean <- education_income_raw |>
+education_income_clean <- education_income_raw |> ## |> is the same as piping (used in base code R), preferred over %% piping (only available in tidyverse package)
   dplyr::mutate(
     education = as.numeric(education),
     income    = as.numeric(income)
@@ -174,26 +178,33 @@ readr::write_csv(education_income_clean, "data/processed/cleaned_education_incom
 
 
 log_info("Fitting Model 1: income ~ education")
-# TODO: model_1 <- ...
+model_1 <- lm(income ~ education, data = education_income_clean)
 
 log_info("Fitting Model 2: income ~ education + I(education^2)")
-# TODO: model_2 <- ...
+model_2 <- lm(income ~ education + I(education^2), data = education_income_clean)
 
 log_info("Fitting Model 3: log(income) ~ education (finite log income rows only)")
-# TODO: model_3 <- ...
+model_3 <- lm(log_income ~ education, data = education_income_log)
 
 # Save model summaries (plain text) for replication checks
 log_info("Saving regression summaries to outputs/tables/")
-# TODO: writeLines(capture.output(summary(model_1)), "outputs/tables/model_1_summary.txt")
-# TODO: writeLines(capture.output(summary(model_2)), "outputs/tables/model_2_summary.txt")
-# TODO: writeLines(capture.output(summary(model_3)), "outputs/tables/model_3_summary.txt")
+writeLines(capture.output(summary(model_1)), "outputs/tables/model_1_summary.txt")
+writeLines(capture.output(summary(model_2)), "outputs/tables/model_2_summary.txt")
+writeLines(capture.output(summary(model_3)), "outputs/tables/model_3_summary.txt")
+
 # TODO: create and write a regression_coefficients.csv table
+coefficients_table <- bind_rows(
+  tidy(model_1) |> mutate(model = "Model 1: Linear"),
+  tidy(model_2) |> mutate(model = "Model 2: Quadratic"),
+  tidy(model_3) |> mutate(model = "Model 3: Log Income"),
+)
+write_csv(coefficients_table, "outputs/tables/regression_coefficients.csv")
 
 # TODO (students):
 # - Write sessionInfo() output to outputs/session_info.txt
 
 log_info("Saving session information")
-# TODO: writeLines(capture.output(sessionInfo()), "outputs/session_info.txt")
+writeLines(capture.output(sessionInfo()), "outputs/session_info.txt")
 
 
 # TODO (students):
@@ -204,3 +215,5 @@ log_info("Snapshotting dependencies to renv.lock")
 renv::snapshot()
 
 log_info("Analysis pipeline completed successfully")
+
+

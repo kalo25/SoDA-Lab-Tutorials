@@ -1,0 +1,21 @@
+INFO [2026-01-22 14:34:32] Starting analysis pipeline
+INFO [2026-01-22 14:34:44] Loading education/income dataset from data/raw/education_income.csv
+INFO [2026-01-22 14:36:56] Saving raw data copy (unchanged)
+INFO [2026-01-22 14:39:46] Loading education/income dataset from data/raw/education_income.csv
+INFO [2026-01-22 14:41:03] Loading education/income dataset from data/raw/education_income.csv
+INFO [2026-01-22 14:41:41] Saving raw data copy (unchanged)
+INFO [2026-01-22 14:42:09] Cleaning education/income data
+INFO [2026-01-22 14:51:45] Rows loaded: 95
+INFO [2026-01-22 14:51:45] Columns loaded: 5
+INFO [2026-01-22 14:51:50] Saving raw data copy (unchanged)
+INFO [2026-01-22 14:51:56] Cleaning education/income data
+INFO [2026-01-22 14:52:02] Rows after cleaning: 95
+INFO [2026-01-22 14:52:15] Rows with finite log(income): 95
+INFO [2026-01-22 14:52:15] Saving processed data
+INFO [2026-01-22 14:57:26] Fitting Model 1: income ~ education
+INFO [2026-01-22 14:57:26] Fitting Model 2: income ~ education + I(education^2)
+INFO [2026-01-22 14:57:26] Fitting Model 3: log(income) ~ education (finite log income rows only)
+INFO [2026-01-22 14:58:23] Saving regression summaries to outputs/tables/
+INFO [2026-01-22 15:00:47] Saving session information
+INFO [2026-01-22 15:00:54] Snapshotting dependencies to renv.lock
+INFO [2026-01-22 15:00:55] Analysis pipeline completed successfully
