@@ -177,6 +177,19 @@ log_info("Saving processed data")
 readr::write_csv(education_income_clean, "data/processed/cleaned_education_income.csv")
 
 
+log_info("Creating income vs education plot")
+
+ggplot(education_income_clean, aes(x = education, y = income)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(x = "Education (Years)", y = "Income", title = "Income vs Education") +
+  theme_minimal()
+
+ggsave("outputs/figures/income_education_plot.png", width = 8, height = 6)
+
+log_info("Plot saved to outputs/figures/income_education_plot.png")
+
+
 log_info("Fitting Model 1: income ~ education")
 model_1 <- lm(income ~ education, data = education_income_clean)
 

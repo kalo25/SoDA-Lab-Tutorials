@@ -19,3 +19,8 @@ INFO [2026-01-22 14:58:23] Saving regression summaries to outputs/tables/
 INFO [2026-01-22 15:00:47] Saving session information
 INFO [2026-01-22 15:00:54] Snapshotting dependencies to renv.lock
 INFO [2026-01-22 15:00:55] Analysis pipeline completed successfully
+INFO [2026-01-22 15:40:22] Creating income vs education plot
+INFO [2026-01-22 15:40:29] Plot saved to outputs/figures/income_education_plot.png
+INFO [2026-01-22 15:40:54] Saving session information
+INFO [2026-01-22 15:40:57] Snapshotting dependencies to renv.lock
+INFO [2026-01-22 15:41:00] Analysis pipeline completed successfully
