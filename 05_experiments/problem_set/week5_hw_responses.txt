@@ -1,0 +1,13 @@
+CONCEPTUAL QUESTION PROMPT: Estimands at scale (ITT vs “product impact”). In a platform A/B test, the treatment may (i) fail to deliver to some users, (ii) deliver but users may not engage, and (iii) outcomes may be measured through fragile logs.
+-Define the ITT estimand in this setting.
+-Give one reason ITT is the default for decision-making in production experiments.
+-Explain one case where ITT is not the estimand a research audience wants, and what
+additional assumptions you would need to target an alternative estimand.
+
+
+RESPONSE:
+The ITT estimand is the effect of being assigned to a treatment group (if A is the control, then B is the treatment). If, for example, the product being tested is a loyalty/rewards system, then a user in the treatment group would be prompted to sign up for a rewards account. 
+
+ITT is probably the default for decision-making because it preserves randomization, which is extremely important for making causal arguments and ensuring high statistical power. Even if the coefficient is smaller than desired, the research team can still point to their results and argue that there was a cause and effect during the process of implementing the loyalty/rewards system. 
+
+An example of where ITT is not the ideal estimand is a hypothetical experiment where medical researchers are assigning a miracle drug that cures cancer to cancer patients in the treatment group. The stakes here are much higher than that of a company testing a product rollout. Researchers need to know whether the drug actually works in the way they expected, across all the patients assigned to take the drug. Using the ITT here would artificially diminish the effect size since you've also included the proportion of patients who didn't take the drug for whatever reason. The non-compliant patients are an irrelevant variable here--they contribute nothing to the researchers' focal interest, which is: does the miracle drug actually cure cancer? For this hypothetical experiment, you would use the TOT estimand (treatment on the treated), which specifically measures the effect size of the drug on the patients who actually used the drug. The biggest assumption that would need to be met is SUTVA, which assumes that there is no interference or communication between units in a way that would affect the outcome, and that identical treatments are given to every unit. Assuming SUTVA holds, it is then possible to make comparisons between the treatment and control groups even if you exclude the non-compliant units. 
