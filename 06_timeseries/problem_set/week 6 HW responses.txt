@@ -1,0 +1,9 @@
+week 6 HW conceptual questions
+
+2. Causal timing designs and placebos. Interrupted Time Series (ITS) is often used when an intervention occurs at a known time t0 but randomization is not available. State 1 key identification assumption behind ITS + explain the difference between a "level change" and a "trend change" at t0 + propose one placebo diagnostic and explain what failure would look like (e.g., a fake intervention date, pre-trend check, etc.)
+
+An ITS model is used when researchers are trying to make a causal argument about a treatment effect (pre-exposure vs post-exposure). Therefore, they must meet the assumption that their instrumental variable (i.e., the treatment) has no correlation whatsoever with any potential confounding variables. Researchers need to be sure that any observed differences in the units post-exposure can only be attributed to the treatment itself, not an unobserved spurious factor. In fixed-effects models like ITS, this is done by controlling away all time-stable characteristics within the model. 
+
+A level change is when the post-treatment group experiences a sharp increase or decrease compared to its baseline pre-treatment; i.e., the intercept jumps from one point to another. A trend change is when the slope increases or decreases compared to a counterfactual slope (which shows the presumed outcomes of a null treatment effect). 
+
+One type of placebo diagnostic is applying a fake and arbitrary intervention date into a separate model that uses the same dataset. Then, you run predictions alongside the original model and compare for any differences. If both the model with the actual intervention date and the model with the placebo date show statistical significance, then this means seasonality exists in the data (i.e., certain characteristics in the sample are NOT time-stable) and it needs to be accounted for. 
