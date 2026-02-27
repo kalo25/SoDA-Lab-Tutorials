@@ -1,0 +1,9 @@
+doc_id,event_type_gold,event_type_pred
+doc_001,protest,other
+doc_002,policy_change,policy_change
+doc_003,election,other
+doc_004,disaster,disaster
+doc_005,violence,other
+doc_006,policy_change,other
+doc_007,protest,protest
+doc_008,disaster,disaster
