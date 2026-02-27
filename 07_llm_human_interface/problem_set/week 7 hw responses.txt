@@ -1,0 +1,9 @@
+WEEK 7 HOMEWORK: LLM's
+##CONCEPTUAL QUESTION:##
+Explain why {schema-constrained} extraction (structured JSON fields with explicit missingness rules) can reduce hallucination relative to free-form summarization. 
+Then explain one limitation: a way the model can still produce systematically wrong extractions even when it outputs ``valid'' JSON.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LLMs are susceptible to "hallucination," or generating completely erroneous content derived from the datasets they were trained on, because they are not capable of critical thinking or autonomous decision-making. This is why it is extremely important that human users impose clearly defined, specific, and strict rules whenever running an LLM. Providing a schema means the model is able to load data into pre-existing, highly structured categories (created by the human) that make it much easier for users to 1. interpret the data and 2. be confident in its validity and consistency. Without this structure, LLM outputs may be entirely nonsensical or extremely difficult to understand, depending on how well the model has been trained. 
+
+However, using a schema does not guarantee a perfect output from the LLM. Data may be mistakenly sorted into the wrong category for context-dependent reasons. For example, if an LLM designed for sentiment analysis is processing a comedy bit, it may code a sentence laden with sarcasm as "positive" rather than the correct category ("negative") because sarcasm is not evident in text format. This would still come out as a "valid" output though because it still technically follows the schema specified by the user. 
+
