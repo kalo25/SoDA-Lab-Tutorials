@@ -1,0 +1,10 @@
+Unnamed: 0,precision,recall,f1-score,support
+disaster,1.0,1.0,1.0,2
+election,0.0,0.0,0.0,1
+other,0.0,0.0,0.0,0
+policy_change,1.0,0.5,0.67,2
+protest,1.0,0.5,0.67,2
+violence,0.0,0.0,0.0,1
+accuracy,,,0.5,8
+macro avg,0.5,0.33,0.39,8
+weighted avg,0.75,0.5,0.58,8
