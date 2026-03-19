@@ -2,8 +2,32 @@
 #SODA WEEK 09 HW: DATA QUALITY AND MEASUREMENT ERROR
 #Kawain Lo
 ################################################################################
-#Step 1: Run the demo script end-to-end and confirm it writes outputs to the correct folders
-#CONFIRMED
+##CONCEPTUAL QUESTION: Define {measurement error} and explain why it can bias regression estimates. 
+#In your answer, distinguish between 
+    #(i) measurement error in a {predictor} that is not a confounder and 
+    #(ii) measurement error in a {confounder}. 
+#Explain why the second case can bias the estimated treatment effect even when the model ``controls for'' the noisy confounder.
+####-----------------------
+#RESPONSE BELOW
+###-----------------------
+#Measurement error is when a reported/observed datapoint is not reflective of its true state/value at the moment of observation.
+#This is especially common in social sciences, in which researchers are required to quantify and attempt to measure abstract concepts.
+#Random error gets introduced into any study simply because of the nature of this type of research; we study real-world conditions, 
+#which can't be controlled or manipulated down to the smallest detail. Of course, if the researcher fails to account for measurement 
+#error and takes their data at face value (assuming it is an accurate representation of the truth), then they risk reporting any study
+#outcomes as having stronger (or weaker) effects than are occurring in real life. 
+#Measurement error in either a predictor(focal) variable or a confounding variable can bias outcomes, but measurement error in the 
+#latter category is more serious. For example, a basic correlational/causal model states there is a direct relationship between a predictor variable 
+#and an outcome variable. Even if random error throws off the coefficients of the predictor variable, any predicted outcomes are still reflective
+#of the relationship between the IV and the DV.
+#On the other hand, any errors that bias the effects of the confounding variable can lead researchers to misinterpret the magnitude of the focal
+#relationship b/c the effects of the confounder are directly obscuring/interfering with the effect of the predictor variable. It also threatens
+#the proposed relationship because the confounding variable may be construed to be completely responsible for any changes in the outcome, rendering
+#the predictor variable irrelevant. 
+
+############################################################
+#EXERCISE 1: Run the demo script end-to-end and confirm it writes outputs to the correct folders
+#CONFIRMED -- see demo_log.ipynb
 
 ###########################################################
 #SETUP
@@ -162,7 +186,7 @@ results1.to_csv("09_data_quality/problem_set/HW_measurement_error_results.csv", 
 #This is also reasonable, since the placebo model is meant to represent a null treatment effect (and
 #the increase in estimates is correlated with the increase in random error, as explained above).
 ###############################################################################################################
-#Step 2: Validation subsample and regression calibration
+#EXERCISE 2: Validation subsample and regression calibration
 ######################################
 #change validation share to 3 values (0.05, 0.20, 0.50) by editing [validation_share]
 
@@ -283,7 +307,7 @@ results_hw.to_csv("09_data_quality/problem_set/HW_val3_measurement_error_results
 #is not a foolproof remedy for these problems. 
 
 ###################################################################################################################
-#Step 3: Placebo Tests (outcome placebo and treatment permutation)
+#EXERCISE 3: Placebo Tests (outcome placebo and treatment permutation)
 #####################################
 #Using the demo script:
 
