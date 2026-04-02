@@ -16,6 +16,8 @@
 # - Steps are repeated explicitly so students can follow and modify each piece.
 ###############################################################################
 
+##SQL is most commonly used in industry for organizing data
+
 # -----------------------------------------------------------------------------
 # Setup
 # -----------------------------------------------------------------------------
@@ -47,11 +49,12 @@ from datetime import date, timedelta
 # Step 1: Connect to a database file
 # -----------------------------------------------------------------------------
 # If the file does not exist, SQLite creates it automatically.
-con = sqlite3.connect("campaign_finance.db")
-cur = con.cursor()
+con = sqlite3.connect("campaign_finance.db")        #creating a FAKE database named "campaign_dinance.db" using SQL syntax and SQL libraries
+cur = con.cursor()                                  #a cursor allows you to process/import data one row at a time
 
 # -----------------------------------------------------------------------------
-# Step 2: Drop tables (so the script can be rerun from scratch)
+# Step 2: Drop tables (so the script can be rerun from scratch) #NOT NECESSARY FOR THE FIRST TIME AROUND
+#                                                               ##--run only when you're doing a second round to "reset" your environment
 # -----------------------------------------------------------------------------
 # SQL keyword notes:
 # - DROP TABLE removes a table
@@ -68,13 +71,16 @@ con.commit()
 # SQL keyword notes:
 # - CREATE TABLE creates a new table
 # - PRIMARY KEY uniquely identifies each row
-# - FOREIGN KEY enforces relationships between tables (relational structure)
+# - FOREIGN KEY enforces relationships between tables (relational structure) 
 
-cur.execute("""
+#actually creating each of the three table objects we will later insert synthetic data into
+#"INTEGER" "TEXT" etc = setting format/type for column data
+
+cur.execute("""                            
   CREATE TABLE candidates (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
-    party TEXT,
+    party TEXT, 
     office TEXT,
     winner INTEGER  -- 1 = winner, 0 = not winner (SQLite stores booleans as integers)
   );
@@ -89,6 +95,7 @@ cur.execute("""
     state TEXT
   );
 """)
+#FOREIGN KEY--allows you to link your original table with other tables based on a common variable/column
 
 cur.execute("""
   CREATE TABLE contributions (
@@ -101,7 +108,7 @@ cur.execute("""
     FOREIGN KEY (candidate_id) REFERENCES candidates(id)
   );
 """)
-con.commit()
+con.commit() #loads empty table into dataframe (shortcut "con")
 
 # -----------------------------------------------------------------------------
 # Step 4: Generate simulated data
@@ -210,7 +217,7 @@ contributions = pd.DataFrame({
 # pandas.DataFrame.to_sql() writes a DataFrame into a database table.
 # chunksize helps avoid huge single inserts.
 
-candidates.to_sql("candidates", con, if_exists="append", index=False, chunksize=5000)
+candidates.to_sql("candidates", con, if_exists="append", index=False, chunksize=5000) #"chunksize" = importing data into the table by segments of 5000 observations each
 contributors.to_sql("contributors", con, if_exists="append", index=False, chunksize=5000)
 contributions.to_sql("contributions", con, if_exists="append", index=False, chunksize=5000)
 con.commit()
@@ -223,7 +230,7 @@ con.commit()
 # - CREATE INDEX builds an index structure for faster lookups
 # - IF NOT EXISTS prevents errors if an index already exists
 
-cur.execute("CREATE INDEX IF NOT EXISTS idx_contrib_contributor_id ON contributions (contributor_id);")
+cur.execute("CREATE INDEX IF NOT EXISTS idx_contrib_contributor_id ON contributions (contributor_id);") 
 cur.execute("CREATE INDEX IF NOT EXISTS idx_contrib_candidate_id   ON contributions (candidate_id);")
 cur.execute("CREATE INDEX IF NOT EXISTS idx_contrib_amount         ON contributions (amount);")
 cur.execute("CREATE INDEX IF NOT EXISTS idx_contrib_date           ON contributions (date);")
@@ -231,20 +238,28 @@ con.commit()
 
 # -----------------------------------------------------------------------------
 # Step 7: Quick sanity checks (counts + small samples)
+# similar logic as a left_join in R (check for errors in many-to-many joins)
 # -----------------------------------------------------------------------------
 print("\n------------------------------")
 print("Sanity checks: table sizes")
 print("------------------------------")
 
-print(pd.read_sql_query("SELECT COUNT(*) AS n_candidates FROM candidates;", con))
+print(pd.read_sql_query("SELECT COUNT(*) AS n_candidates FROM candidates;", con)) #con references the synthetic dataframe we created in the beginning
 print(pd.read_sql_query("SELECT COUNT(*) AS n_contributors FROM contributors;", con))
 print(pd.read_sql_query("SELECT COUNT(*) AS n_contributions FROM contributions;", con))
+#output shows that the sum of each column has been imported properly
+
 
 print("\n------------------------------")
 print("Sanity checks: sample rows")
 print("------------------------------")
 
-print(pd.read_sql_query("SELECT * FROM candidates LIMIT 5;", con))
+print(pd.read_sql_query("SELECT * FROM candidates LIMIT 5;", con)) #shows top 5 rows of the synthetic dataframe
+
+
+##FOR BELOW:  ##from "contributions" table
+              ##join to "candidates" table
+              ##join by "candidate_ID" column
 
 print(pd.read_sql_query("""
   SELECT
@@ -253,9 +268,9 @@ print(pd.read_sql_query("""
     ca.name AS candidate_name,
     co.amount,
     co.date
-  FROM contributions co
-  JOIN candidates ca
-    ON co.candidate_id = ca.id
+  FROM contributions co                      
+  JOIN candidates ca                         
+    ON co.candidate_id = ca.id               
   LIMIT 5;
 """, con))
 
@@ -285,11 +300,14 @@ print(pd.read_sql_query("""
 # - GROUP BY creates groups
 # - ORDER BY sorts totals descending
 
+#LINE 308: #creating new variable "total_amount"
+#LINE 309  #creating new variable as "num_contributions"
+
 query_1 = """
   SELECT
     c.occupation,
-    SUM(co.amount) AS total_amount,
-    COUNT(*) AS num_contributions
+    SUM(co.amount) AS total_amount, 
+    COUNT(*) AS num_contributions   
   FROM contributors c
   JOIN contributions co
     ON c.id = co.contributor_id
@@ -297,7 +315,7 @@ query_1 = """
   ORDER BY total_amount DESC
   LIMIT 10;
 """
-top_occupations = pd.read_sql_query(query_1, con)
+top_occupations = pd.read_sql_query(query_1, con) #merging the results of the command executed as "query_1" into the dataframe "con"
 
 print("\n------------------------------")
 print("Top 10 occupations by total contribution amount")
@@ -489,7 +507,7 @@ plt.title("Total Contributions by Party")
 plt.xlabel("Party")
 plt.ylabel("Total Amount ($)")
 plt.tight_layout()
-plt.savefig("contributions_by_party.png", dpi=150)
+plt.savefig("demo/contributions_by_party.png", dpi=150)
 plt.show()
 
 print("\nSaved plot: contributions_by_party.png")
